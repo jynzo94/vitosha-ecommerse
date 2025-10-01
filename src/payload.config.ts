@@ -6,9 +6,12 @@ import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
+import { ecommercePlugin } from '@payloadcms/plugin-ecommerce'
+import { stripeAdapter } from '@payloadcms/plugin-ecommerce/payments/stripe'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
+import { ProductsCollection } from './collections/Products'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -31,7 +34,30 @@ export default buildConfig({
   }),
   sharp,
   plugins: [
-    payloadCloudPlugin(),
-    // storage-adapter-placeholder
+    ecommercePlugin({
+      payments: {
+        paymentMethods: [
+          stripeAdapter({
+            secretKey: process.env.STRIPE_SECRET_KEY!,
+            publishableKey: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
+            webhookSecret: process.env.STRIPE_WEBHOOKS_SIGNING_SECRET!,
+          }),
+        ],
+      },
+      access: {
+        adminOnly: () => true,
+        adminOnlyFieldAccess: () => true,
+        adminOrCustomerOwner: () => true,
+        adminOrPublishedStatus: () => true,
+        customerOnlyFieldAccess: () => true,
+        publicAccess: () => true,
+        authenticatedOnly: () => true,
+      },
+      customers: { slug: 'users' },
+      products: {
+        variants: true,
+        productsCollectionOverride: ProductsCollection,
+      },
+    }),
   ],
 })
