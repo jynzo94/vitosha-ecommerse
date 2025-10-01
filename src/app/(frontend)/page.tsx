@@ -3,6 +3,8 @@ import { getPayload } from 'payload'
 import React from 'react'
 
 import config from '@/payload.config'
+import AddToCartButton from '@/components/AddToCartButton'
+import Cart from '@/components/Cart'
 
 export default async function HomePage() {
   const headers = await getHeaders()
@@ -10,5 +12,13 @@ export default async function HomePage() {
   const payload = await getPayload({ config: payloadConfig })
   const { user } = await payload.auth({ headers })
 
-  return <div>Home Page</div>
+  return (
+    <div>
+      Home Page
+      <div className="mt-20 space-y-10">
+        <AddToCartButton />
+        <Cart />
+      </div>
+    </div>
+  )
 }
