@@ -7,7 +7,15 @@ export const Users: CollectionConfig = {
   },
   auth: true,
   fields: [
-    // Email added by default
-    // Add more fields as needed
+    {
+      name: 'addresses',
+      type: 'join',
+      collection: 'addresses',
+      on: 'customer',
+      admin: {
+        allowCreate: false,
+        defaultColumns: ['id'],
+      },
+    },
   ],
 }

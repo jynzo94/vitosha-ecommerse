@@ -87,6 +87,9 @@ export interface Config {
     'payload-migrations': PayloadMigration;
   };
   collectionsJoins: {
+    users: {
+      addresses: 'addresses';
+    };
     variantTypes: {
       options: 'variantOptions';
     };
@@ -163,6 +166,11 @@ export interface UserAuthOperations {
  */
 export interface User {
   id: string;
+  addresses?: {
+    docs?: (string | Address)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -183,6 +191,18 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "addresses".
+ */
+export interface Address {
+  id: string;
+  title: string;
+  address: string;
+  customer?: (string | null) | User;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
  */
 export interface Media {
@@ -199,67 +219,6 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "addresses".
- */
-export interface Address {
-  id: string;
-  customer?: (string | null) | User;
-  title?: string | null;
-  firstName?: string | null;
-  lastName?: string | null;
-  company?: string | null;
-  addressLine1?: string | null;
-  addressLine2?: string | null;
-  city?: string | null;
-  state?: string | null;
-  postalCode?: string | null;
-  country:
-    | 'US'
-    | 'GB'
-    | 'CA'
-    | 'AU'
-    | 'AT'
-    | 'BE'
-    | 'BR'
-    | 'BG'
-    | 'CY'
-    | 'CZ'
-    | 'DK'
-    | 'EE'
-    | 'FI'
-    | 'FR'
-    | 'DE'
-    | 'GR'
-    | 'HK'
-    | 'HU'
-    | 'IN'
-    | 'IE'
-    | 'IT'
-    | 'JP'
-    | 'LV'
-    | 'LT'
-    | 'LU'
-    | 'MY'
-    | 'MT'
-    | 'MX'
-    | 'NL'
-    | 'NZ'
-    | 'NO'
-    | 'PL'
-    | 'PT'
-    | 'RO'
-    | 'SG'
-    | 'SK'
-    | 'SI'
-    | 'ES'
-    | 'SE'
-    | 'CH';
-  phone?: string | null;
-  updatedAt: string;
-  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -531,6 +490,7 @@ export interface PayloadMigration {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  addresses?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -571,18 +531,9 @@ export interface MediaSelect<T extends boolean = true> {
  * via the `definition` "addresses_select".
  */
 export interface AddressesSelect<T extends boolean = true> {
-  customer?: T;
   title?: T;
-  firstName?: T;
-  lastName?: T;
-  company?: T;
-  addressLine1?: T;
-  addressLine2?: T;
-  city?: T;
-  state?: T;
-  postalCode?: T;
-  country?: T;
-  phone?: T;
+  address?: T;
+  customer?: T;
   updatedAt?: T;
   createdAt?: T;
 }

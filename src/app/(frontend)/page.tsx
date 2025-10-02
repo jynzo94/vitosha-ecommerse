@@ -5,6 +5,7 @@ import React from 'react'
 import config from '@/payload.config'
 import AddToCartButton from '@/components/AddToCartButton'
 import Cart from '@/components/Cart'
+import AddressForm from '@/components/AddressForm'
 
 export default async function HomePage() {
   const headers = await getHeaders()
@@ -18,6 +19,7 @@ export default async function HomePage() {
       <div className="mt-20 space-y-10">
         <AddToCartButton />
         <Cart />
+        <AddressForm />
       </div>
     </div>
   )

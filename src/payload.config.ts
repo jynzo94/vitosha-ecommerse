@@ -35,6 +35,37 @@ export default buildConfig({
   sharp,
   plugins: [
     ecommercePlugin({
+      // inventory: false,
+      addresses: {
+        addressesCollectionOverride: ({ defaultCollection }) => {
+          console.log('addressesCollectionOverride', defaultCollection)
+          return {
+            ...defaultCollection,
+            admin: {
+              ...defaultCollection.admin,
+              hidden: false,
+            },
+            fields: [
+              {
+                name: 'title',
+                type: 'text',
+                required: true,
+              },
+              {
+                name: 'address',
+                type: 'text',
+                required: true,
+              },
+              {
+                name: 'customer',
+                type: 'relationship',
+                label: 'Customer',
+                relationTo: 'users',
+              },
+            ],
+          }
+        },
+      },
       payments: {
         paymentMethods: [
           stripeAdapter({

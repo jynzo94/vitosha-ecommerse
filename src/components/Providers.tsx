@@ -5,7 +5,10 @@ import { PropsWithChildren } from 'react'
 
 export const Providers = ({ children }: PropsWithChildren) => (
   <EcommerceProvider
+    syncLocalStorage={{ key: 'payload-cart' }}
     api={{
+      apiRoute: '/api',
+      serverURL: 'http://localhost:3000',
       cartsFetchQuery: {
         depth: 2,
         populate: {
