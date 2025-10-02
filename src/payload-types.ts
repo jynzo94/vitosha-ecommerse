@@ -171,6 +171,7 @@ export interface User {
     hasNextPage?: boolean;
     totalDocs?: number;
   };
+  roles?: ('admin' | 'customer')[] | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -491,6 +492,7 @@ export interface PayloadMigration {
  */
 export interface UsersSelect<T extends boolean = true> {
   addresses?: T;
+  roles?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;

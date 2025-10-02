@@ -1,11 +1,29 @@
+import { adminOnlyFieldAccess } from '@/access/adminOnlyFieldAccess'
 import type { CollectionConfig } from 'payload'
+import { ensureFirstUserIsAdmin } from './hooks/ensureFirstUserIsAdmin'
+import { adminOnly } from '@/access/adminOnly'
+import { adminOrSelf } from '@/access/adminOrSelf'
+import { publicAccess } from '@/access/publicAccess'
+import { checkRole } from '@/access/utilities'
 
 export const Users: CollectionConfig = {
   slug: 'users',
   admin: {
     useAsTitle: 'email',
   },
-  auth: true,
+  access: {
+    admin: ({ req: { user } }) => checkRole(['admin'], user),
+    create: publicAccess,
+    delete: adminOnly,
+    read: adminOrSelf,
+    update: adminOrSelf,
+  },
+  auth: {
+    verify: false,
+    maxLoginAttempts: 5,
+    tokenExpiration: 60 * 60 * 24 * 7,
+    cookies: { secure: process.env.NODE_ENV === 'production', sameSite: 'Lax' },
+  },
   fields: [
     {
       name: 'addresses',
@@ -16,6 +34,30 @@ export const Users: CollectionConfig = {
         allowCreate: false,
         defaultColumns: ['id'],
       },
+    },
+    {
+      name: 'roles',
+      type: 'select',
+      access: {
+        create: adminOnlyFieldAccess,
+        read: adminOnlyFieldAccess,
+        update: adminOnlyFieldAccess,
+      },
+      defaultValue: ['customer'],
+      hasMany: true,
+      hooks: {
+        beforeChange: [ensureFirstUserIsAdmin],
+      },
+      options: [
+        {
+          label: 'admin',
+          value: 'admin',
+        },
+        {
+          label: 'customer',
+          value: 'customer',
+        },
+      ],
     },
   ],
 }

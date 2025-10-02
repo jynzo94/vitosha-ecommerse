@@ -1,6 +1,7 @@
 'use client'
 
 import { useCart } from '@payloadcms/plugin-ecommerce/client/react'
+import { Button } from './ui/button'
 
 export default function AddToCartButton() {
   const { addItem } = useCart()
@@ -14,12 +15,5 @@ export default function AddToCartButton() {
     })
   }
 
-  return (
-    <button
-      className="border rounded-2xl px-4 py-2 hover:bg-amber-950 transition-all"
-      onClick={onClick}
-    >
-      Add to Cart
-    </button>
-  )
+  return <Button onClick={onClick}>Add to Cart</Button>
 }

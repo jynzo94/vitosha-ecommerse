@@ -9,16 +9,16 @@ import sharp from 'sharp'
 import { ecommercePlugin } from '@payloadcms/plugin-ecommerce'
 import { stripeAdapter } from '@payloadcms/plugin-ecommerce/payments/stripe'
 
-import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { ProductsCollection } from './collections/Products'
+import { Users } from './collections/Users'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
   admin: {
-    user: Users.slug,
+    user: 'users',
     importMap: {
       baseDir: path.resolve(dirname),
     },

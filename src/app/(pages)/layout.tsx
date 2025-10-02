@@ -1,6 +1,7 @@
 import React from 'react'
-import './styles.css'
+import '../../styles.css'
 import { Providers } from '@/components/Providers'
+import Navbar from '@/components/Navbar'
 
 export const metadata = {
   description: 'A blank template using Payload in a Next.js app.',
@@ -11,9 +12,10 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
   const { children } = props
 
   return (
-    <html lang="en">
-      <body className="min-h-screen bg-black text-white p-4">
+    <html lang="en" suppressHydrationWarning>
+      <body className="min-h-screen">
         <Providers>
+          <Navbar />
           <main>{children}</main>
         </Providers>
       </body>
