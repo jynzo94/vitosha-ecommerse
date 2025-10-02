@@ -22,7 +22,7 @@ export const Users: CollectionConfig = {
     verify: false,
     maxLoginAttempts: 5,
     tokenExpiration: 60 * 60 * 24 * 7,
-    cookies: { secure: process.env.NODE_ENV === 'production', sameSite: 'Lax' },
+    cookies: { secure: false, sameSite: 'Lax' },
   },
   fields: [
     {
@@ -33,6 +33,26 @@ export const Users: CollectionConfig = {
       admin: {
         allowCreate: false,
         defaultColumns: ['id'],
+      },
+    },
+    {
+      name: 'orders',
+      type: 'join',
+      collection: 'orders',
+      on: 'customer',
+      admin: {
+        allowCreate: false,
+        defaultColumns: ['id', 'createdAt', 'total', 'currency', 'items'],
+      },
+    },
+    {
+      name: 'cart',
+      type: 'join',
+      collection: 'carts',
+      on: 'customer',
+      admin: {
+        allowCreate: false,
+        defaultColumns: ['id', 'createdAt', 'total', 'currency', 'items'],
       },
     },
     {

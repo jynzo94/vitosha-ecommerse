@@ -38,7 +38,6 @@ export default buildConfig({
       // inventory: false,
       addresses: {
         addressesCollectionOverride: ({ defaultCollection }) => {
-          console.log('addressesCollectionOverride', defaultCollection)
           return {
             ...defaultCollection,
             admin: {
