@@ -12,6 +12,7 @@ import { stripeAdapter } from '@payloadcms/plugin-ecommerce/payments/stripe'
 import { Media } from './collections/Media'
 import { ProductsCollection } from './collections/Products'
 import { Users } from './collections/Users'
+import { stripePlugin } from '@payloadcms/plugin-stripe'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -34,10 +35,41 @@ export default buildConfig({
   }),
   sharp,
   plugins: [
+    stripePlugin({
+      stripeSecretKey: process.env.STRIPE_SECRET_KEY!,
+      isTestKey: true,
+      // sync:[{}],
+      logs: true,
+    }),
     ecommercePlugin({
+      orders: {
+        ordersCollectionOverride: ({ defaultCollection }) => {
+          // console.log('---orders-collection', defaultCollection)
+          return {
+            ...defaultCollection,
+            admin: {
+              ...defaultCollection.admin,
+              hidden: false,
+            },
+          }
+        },
+      },
+      transactions: {
+        transactionsCollectionOverride: ({ defaultCollection }) => {
+          // console.log('---transaction-collection', defaultCollection)
+          return {
+            ...defaultCollection,
+            admin: {
+              ...defaultCollection.admin,
+              hidden: false,
+            },
+          }
+        },
+      },
       // inventory: false,
       addresses: {
         addressesCollectionOverride: ({ defaultCollection }) => {
+          // console.log('---addresses-collection', defaultCollection)  
           return {
             ...defaultCollection,
             admin: {
@@ -45,22 +77,23 @@ export default buildConfig({
               hidden: false,
             },
             fields: [
-              {
-                name: 'title',
-                type: 'text',
-                required: true,
-              },
-              {
-                name: 'address',
-                type: 'text',
-                required: true,
-              },
-              {
-                name: 'customer',
-                type: 'relationship',
-                label: 'Customer',
-                relationTo: 'users',
-              },
+              ...defaultCollection.fields,
+              // {
+              //   name: 'title',
+              //   type: 'text',
+              //   required: true,
+              // },
+              // {
+              //   name: 'address',
+              //   type: 'text',
+              //   required: true,
+              // },
+              // {
+              //   name: 'customer',
+              //   type: 'relationship',
+              //   label: 'Customer',
+              //   relationTo: 'users',
+              // },
             ],
           }
         },
